@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Servicio de acortador de URL</title>
+  <link rel="icon" type="image/png" href="https://cdn.freecodecamp.org/universal/favicons/favicon-16x16.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+</head>
+
+<body>
+
+  <section class="hero is-dark">
+    <div class="hero-body">
+      <p class="title has-text-white has-text-centered">Acortador de URLs con Express y SQLite</p>
+      <p class="subtitle has-text-white has-text-centered has-text-weight-semibold">Prueba de freeCodeCamp para el curso
+        de Backend.</p>
+    </div>
+  </section>
+  <section class="section is-fullheight has-background-dark">
+    <div class="box">
+      <h2 class="is-family-primary is-size-4">Ejemplo:</h2>
+
+      <p class="has-text-weight-semibold mb-2">POST [urlbase]/api/shorturl - https://www.google.co.ve</p>
+
+      <form action="api/shorturl" method="POST">
+        <fieldset>
+          <legend class="is-size-4 has-text-centered mt-1 mb-4">ACORTAR URL</legend>
+          <div class="field has-addons has-addons-centered">
+            <label for="url"
+              class="label is-size-4 is-uppercase has-text-weight-semibold has-text-centered has-text-dark has-text-weight-semibold">URL:
+              &nbsp;</label>
+            <p class="control is-expanded">
+              <input id="url" name="url" class="input" type="text" placeholder="Url a acortar">
+            </p>
+            <p class="control">
+              <input value="Acortar" type="submit" class="button is-primary">
+                
+              </input>
+            </p>
+          </div>
+        </fieldset>
+      </form>
+
+      <h2 class="is-family-primary  is-size-4">Ejemplo de uso: <a href="/api/shorturl/1">[urlbase]/api/shorturl/1</a></h2>
+      <p>
+         <p class="is-size-4 has-text-weight-semibold">Redireccionara a: <a href="https://www.google.co.ve" >https://www.google.co.ve</a></p>
+        
+      </p>
+    </div>
+    </div>
+  </section>
+  <div class="footer has-background-light">
+    <p class="has-text-right">
+      By <a href="https://www.freecodecamp.org/">freeCodeCamp.org</a>
+    </p>
+  </div>
+</body>
+
+
+
+
+
+
+
+
+</html>
