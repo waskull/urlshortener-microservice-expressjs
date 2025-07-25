@@ -1,10 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { isValidUrl, checkURL } = require('./helpers');
 const { neon } = require('@neondatabase/serverless');
 const app = express();
 const port = process.env.PORT || 3000;
+const U = require("url").URL;
 
 app.use(cors());
 app.use(express.json());
@@ -17,26 +17,31 @@ app.get('/', function (req, res) {
 app.post('/api/shorturl', async (req, res) => {
   const url = req.body.url;
   try {
-    const hostname = new URL(url).hostname;
-    if (!isValidUrl(url) || await !checkURL(hostname)) { console.log("url no valida"); return res.json({ error: 'invalid url' }); }
+    const parsedUrl = new U(url);
+    if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+      return res.json({ error: 'invalid url' });
+    }
+    const hostname = parsedUrl.hostname;
+    const esLocalhost = hostname === "localhost";
+    const esDominioValido = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(hostname);
+    const validUrl = esLocalhost || esDominioValido;
+    if (!validUrl) return res.json({ error: 'invalid url' });
     const sql = neon(`${process.env.DATABASE_URL}`);
     const response = await sql`select * from public.url where url = ${url}`;
     const result = response[0];
     if (result) {
       console.log("Url ya existe");
-      res.json({ original_url: result.url, short_url: result.id });
+      return res.json({ original_url: result.url, short_url: result.id });
     }
     else {
       const resp = await sql`insert into public.url (url) values (${url}) returning id`;
-      res.json({ original_url: url, short_url: resp[0].id });
+      return res.json({ original_url: url, short_url: resp[0].id });
     }
   }
   catch (e) {
     console.log(e);
     return res.json({ error: 'invalid url' });
   }
-
-
 });
 
 app.get('/api/shorturl/:url', async (req, res) => {
